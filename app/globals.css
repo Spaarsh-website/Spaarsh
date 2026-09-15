@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* Design tokens. Contrast verified - do not substitute shades. */
+:root {
+  --green-deep: #3f5d45; /* primary: dark bands, headings, body text */
+  --green-olive: #71805a; /* shapes, borders, dividers, hill motif */
+  --terracotta: #b96f52; /* icons, rules, small accents */
+  --terracotta-btn: #8f4e33; /* button fills only */
+  --terracotta-text: #9c5333; /* accent headings on light backgrounds */
+  --cream: #f4e6d8; /* page background */
+  --sand: #e7c7a8; /* secondary cards on cream */
+
+  --card-glow: color-mix(in oklab, var(--green-deep) 45%, transparent);
+}
+
+[data-dark] {
+  --card-glow: color-mix(in oklab, var(--sand) 40%, transparent);
+}
+
+@theme inline {
+  /* Only token colours exist - Tailwind's default palette is removed. */
+  --color-*: initial;
+  --color-green-deep: var(--green-deep);
+  --color-green-olive: var(--green-olive);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-btn: var(--terracotta-btn);
+  --color-terracotta-text: var(--terracotta-text);
+  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-white: #fff; /* button label on terracotta-btn */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-work-sans), system-ui, sans-serif;
+  --font-bengali: var(--font-noto-bengali), serif;
+}
+
+html {
+  scroll-padding-top: 5rem; /* sticky header */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--cream);
+  color: var(--green-deep);
+  overflow-x: clip;
+}
+
+:focus-visible {
+  outline: 2px solid var(--terracotta-btn);
+  outline-offset: 3px;
+}
+
+/* Terracotta rings disappear on deep green; use cream there. */
+[data-dark] :focus-visible {
+  outline-color: var(--cream);
+}
+[data-dark] [data-light] :focus-visible {
+  outline-color: var(--terracotta-btn);
+}
