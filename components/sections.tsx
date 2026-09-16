@@ -12,6 +12,7 @@ import { Icon } from "./Icon";
 import { ImageGrid } from "./ImageGrid";
 import { ContactForm } from "./ContactForm";
 import { Carousel } from "./Carousel";
+import { ReadMore } from "./ReadMore";
 import { SocialLinks } from "./SocialIcon";
 import { btnOutline, btnPrimary, card, container, eyebrow, h2 } from "./ui";
 
@@ -111,11 +112,7 @@ export function Origin() {
     <section id="about" className={`${container} grid gap-10 py-16 md:gap-20 md:py-28 ${origin.image ? "md:grid-cols-2" : ""}`}>
       <div className={origin.image ? "" : "max-w-3xl"}>
         <h2 className={`${h2} mb-8`}>{origin.heading}</h2>
-        {origin.paragraphs.map((p) => (
-          <p key={p} className="mb-5 text-base font-light leading-relaxed md:text-lg">
-            {p}
-          </p>
-        ))}
+        <ReadMore paragraphs={origin.paragraphs} />
         <figure className="mt-10 max-w-md">
           <div aria-hidden="true" className="mb-5 h-0.5 w-16 bg-terracotta" />
           <blockquote className="font-serif text-2xl italic leading-snug">{origin.quote}</blockquote>
@@ -132,15 +129,18 @@ export function Origin() {
 
 /* ---------- 4. What We Do ---------- */
 
-// PLACEHOLDER: icon artwork pending from the designer. `name` is the key to map it to.
-function IconBox({ name }: { name: string }) {
+// Designer icons from public/icons. Decorative - the card heading carries the meaning.
+// ponytail: source files are 48px PNGs, slightly soft on retina; swap for SVGs if the designer exports them.
+function IconBox({ name, small = false }: { name: string; small?: boolean }) {
   return (
-    <div
-      data-icon={name}
-      className="mb-4 flex size-11 items-center justify-center rounded-xl md:mb-7 md:size-14 border-[1.5px] border-dashed border-terracotta font-mono text-[10px] text-terracotta-text"
-    >
-      [icon]
-    </div>
+    <Image
+      src={`/icons/${name}.png`}
+      alt=""
+      width={48}
+      height={48}
+      unoptimized
+      className={`md:mb-6 md:size-12 ${small ? "mb-3 size-9" : "mb-4 size-11"}`}
+    />
   );
 }
 
@@ -324,22 +324,18 @@ function SupportActions({ title }: { title: string }) {
     );
   }
 
-  const [primary, ...rest] = actions;
   const external = (c: ContactChannel) => (c === "whatsapp" ? { target: "_blank", rel: "noopener noreferrer" } : {});
 
   return (
-    <div className="flex items-center gap-3">
-      <a href={primary.href} {...external(primary.channel)} aria-label={`${channelLabel[primary.channel]} about ${title}`} className={`${btnPrimary} flex-1 px-5 max-sm:py-3 sm:flex-none`}>
-        <Icon name={primary.channel} className="size-4" />
-        {channelLabel[primary.channel]}
-      </a>
-      {rest.map((a) => (
+    <div className="flex items-center gap-2">
+      {actions.map((a) => (
         <a
           key={a.channel}
           href={a.href}
           {...external(a.channel)}
           aria-label={`${channelLabel[a.channel]} about ${title}`}
-          className="flex size-12 shrink-0 items-center justify-center border-[1.5px] border-terracotta text-terracotta-text transition-colors hover:bg-sand"
+          title={channelLabel[a.channel]}
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-terracotta-btn text-white transition-colors hover:bg-terracotta-text"
         >
           <Icon name={a.channel} className="size-5" />
         </a>
@@ -363,17 +359,47 @@ export function Support() {
               <li
                 key={o.slug}
                 data-light
-                className={`flex w-[75%] shrink-0 snap-start flex-col bg-cream p-5 ${card} sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-1.5rem)/2)] md:p-8 lg:w-[calc((100%-3rem)/3)]`}
+                className={`flex w-[62%] shrink-0 snap-start flex-col bg-cream p-4 ${card} sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-1.5rem)/2)] md:p-8 lg:w-[calc((100%-3rem)/3)]`}
               >
-                <IconBox name={o.icon} />
-                <h3 className="mb-2 font-serif text-xl font-semibold md:mb-3 md:text-2xl">{o.title}</h3>
-                <p className="mb-5 text-[15px] font-light leading-relaxed md:mb-6 md:text-base">{o.description}</p>
+                <IconBox name={o.icon} small />
+                <h3 className="mb-1.5 font-serif text-lg font-semibold leading-snug md:mb-3 md:text-2xl">{o.title}</h3>
+                <p className="mb-4 text-sm font-light leading-relaxed md:mb-6 md:text-base">{o.description}</p>
                 <div className="mt-auto">
                   <SupportActions title={o.title} />
                 </div>
               </li>
             ))}
           </Carousel>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Volunteer ---------- */
+
+export function Volunteer() {
+  const { volunteer } = site;
+  // Same two-column layout as Get in touch: heading + subheading left, sand panel right.
+  return (
+    <section id="volunteer" className={`${container} pt-16 md:pt-20`}>
+      <div className="grid items-start gap-8 md:grid-cols-[1fr_1.35fr] md:gap-x-16">
+        <div>
+          <h2 className={h2}>{volunteer.heading}</h2>
+          <p className="mt-3 font-serif text-lg italic md:mt-5 md:text-3xl">{volunteer.subheading}</p>
+        </div>
+        <div className="flex flex-col items-start gap-6 rounded-3xl bg-sand p-6 md:p-8">
+          <p className="font-light leading-relaxed md:text-lg">{volunteer.text}</p>
+          <a
+            href={config.volunteerFormUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${btnPrimary} max-sm:w-full`}
+          >
+            {volunteer.cta}
+            <span className="sr-only"> (opens a Google Form in a new tab)</span>
+            <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>

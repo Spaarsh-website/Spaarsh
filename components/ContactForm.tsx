@@ -1,18 +1,11 @@
 "use client";
 
-import Script from "next/script";
 import { useState } from "react";
 import { z } from "zod";
+import { config } from "@/content/config";
 import { contactSchema, type ContactFieldErrors, type ContactInput } from "@/lib/contact-schema";
 import { btnPrimary } from "./ui";
 
-declare global {
-  interface Window {
-    turnstile?: { reset: () => void };
-  }
-}
-
-const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 type Status = "idle" | "sending" | "success" | "error";
 
 const labelCls = "mb-2 block text-[11px] font-medium uppercase tracking-[0.2em]";
@@ -53,35 +46,31 @@ export function ContactForm() {
     }
     setErrors({});
 
-    const token = new FormData(form).get("cf-turnstile-response");
-    if (siteKey && !token) {
-      setStatus("error");
-      setServerError("Please complete the verification check above the button.");
-      return;
-    }
-
     setStatus("sending");
     try {
-      const res = await fetch("/api/contact", {
+      // Formspree accepts JSON when asked for JSON back; "email" becomes the reply-to address.
+      const res = await fetch(config.contactFormEndpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...result.data, token }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          ...result.data,
+          _subject: `Website message from ${result.data.name}`,
+          _gotcha: String(new FormData(form).get("_gotcha") ?? ""), // honeypot: Formspree drops submissions where it's filled
+        }),
         signal: AbortSignal.timeout(20000),
       });
-      const data = await res.json().catch(() => ({}));
       if (res.ok) {
         form.reset();
         setStatus("success");
       } else {
-        if (data.fieldErrors) setErrors(data.fieldErrors);
-        setServerError(data.error ?? "Something went wrong. Please try again.");
+        const data = await res.json().catch(() => ({}));
+        const detail = Array.isArray(data.errors) ? data.errors.map((err: { message?: string }) => err.message).filter(Boolean).join(" ") : "";
+        setServerError(detail || "Your message could not be sent. Please try again, or email us directly.");
         setStatus("error");
       }
     } catch {
       setServerError("We couldn't reach the server. Check your connection and try again.");
       setStatus("error");
-    } finally {
-      window.turnstile?.reset(); // tokens are single-use
     }
   }
 
@@ -98,7 +87,7 @@ export function ContactForm() {
       </p>
     );
 
-  // The form stays mounted when hidden so the Turnstile widget survives "send another".
+  // The form stays mounted while hidden so "Send another message" keeps nothing stale.
   return (
     <>
     <div role="status">
@@ -113,7 +102,8 @@ export function ContactForm() {
       )}
     </div>
     <form noValidate hidden={status === "success"} onSubmit={onSubmit} onChange={onChange} className="flex flex-col gap-5 rounded-3xl bg-sand p-6 md:p-8">
-      {siteKey && <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="lazyOnload" />}
+      {/* Honeypot for bots: invisible and unreachable for people, so it stays empty. */}
+      <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className="grid gap-5 sm:grid-cols-2 sm:gap-4">
       <div>
         <label htmlFor="contact-name" className={labelCls}>Name</label>
@@ -131,8 +121,6 @@ export function ContactForm() {
         <textarea {...field("message")} rows={4} placeholder="How would you like to help?" className={`${inputCls} resize-y`} />
         {fieldError("message")}
       </div>
-
-      {siteKey && <div className="cf-turnstile" data-sitekey={siteKey} data-theme="light" />}
 
       {serverError && (
         <p role="alert" className="border-l-2 border-terracotta-btn bg-cream px-4 py-3 text-sm font-medium">

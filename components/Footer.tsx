@@ -23,7 +23,7 @@ export function Footer() {
             <div className="grid grid-cols-2 gap-8 md:contents">
               <nav aria-label="Footer">
                 <h2 className={label}>Quick links</h2>
-                <ul className="flex flex-col gap-3 text-[15px] font-light">
+                <ul className="flex flex-col gap-2 text-[13px] font-light md:gap-2.5 md:text-sm">
                   {config.footerLinks.map((l) => (
                     <li key={l.href}>
                       <a href={l.href} className="hover:underline">
@@ -36,7 +36,7 @@ export function Footer() {
 
               <div>
                 <h2 className={label}>Contact</h2>
-                <address className="flex flex-col gap-1 text-[15px] font-light not-italic leading-relaxed">
+                <address className="flex flex-col gap-1 break-words text-[13px] font-light not-italic leading-relaxed md:text-sm">
                   <span>{contact.address}</span>
                   {contact.email && (
                     <a href={`mailto:${contact.email}`} className="break-all hover:underline">
@@ -49,7 +49,7 @@ export function Footer() {
                     </a>
                   )}
                 </address>
-                <SocialLinks className="mt-3 text-[15px] font-light" />
+                <SocialLinks className="mt-2 text-[13px] font-light md:text-sm [&_svg]:size-5" />
               </div>
             </div>
           </div>

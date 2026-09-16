@@ -30,6 +30,9 @@ export interface SiteConfig {
   /** Phase 2: registration details. Renders nothing while null. */
   registration: string | null;
   credits: { label: string; url: string };
+  volunteerFormUrl: string;
+  /** Formspree form that delivers contact messages by email. */
+  contactFormEndpoint: string;
 }
 
 export const config: SiteConfig = {
@@ -53,10 +56,14 @@ export const config: SiteConfig = {
     { label: "Our Work", href: "#work" },
     // { label: "Team", href: "#team" }, - hidden with the Team section
     { label: "Support Us", href: "#support" },
+    { label: "Volunteer", href: "#volunteer" },
     { label: "Contact", href: "#contact" },
   ],
   registration: null,
   credits: { label: "@tech_bagwitty", url: "https://www.instagram.com/tech_bagwitty/" },
+  volunteerFormUrl:
+    "https://docs.google.com/forms/d/e/1FAIpQLSeb1H7ZQ1UgFiJQlxuWJRtZ2YTZKuRtf3WD3yjg59t7wIhmNg/viewform?usp=header",
+  contactFormEndpoint: "https://formspree.io/f/xppwagao",
 };
 
 /** Link for a channel, carrying `label` as WhatsApp text or email subject. null if the channel isn't set. */

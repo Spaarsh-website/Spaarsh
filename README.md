@@ -4,7 +4,6 @@ Next.js (App Router) + Tailwind. Static site with a contact form.
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in Resend + Turnstile keys
 npm run dev
 ```
 
@@ -19,4 +18,4 @@ All copy and data live in `content/`. Search for `PLACEHOLDER` to find what stil
 
 ## Contact form
 
-`app/api/contact/route.ts` validates with zod, verifies Turnstile, and sends via Resend from an address on `send.spaarsh.org` (verify that domain in Resend first).
+Messages go to Formspree (`contactFormEndpoint` in `content/config.ts`), which emails them to the form owner. Fields are validated in the browser with zod before sending; spam filtering and reply-to are handled by Formspree.

@@ -8,6 +8,7 @@ import {
   Origin,
   Support,
   VisionMission,
+  Volunteer,
   WhatWeDo,
 } from "@/components/sections";
 
@@ -28,6 +29,7 @@ export default function Home() {
       {/* <Team /> */}
       <Collaborations />
       <Support />
+      <Volunteer />
       <Contact />
     </>
   );
