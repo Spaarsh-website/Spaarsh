@@ -1,6 +1,6 @@
 // -> support_options table
 
-/** Designer icon set in public/icons (48x48 PNG, terracotta). */
+/** Designer icon set in public/icons (144x144 PNG, terracotta). */
 export type IconName = "house" | "tin-sheets" | "rehab-home" | "heart" | "utensils" | "tools" | "book-pencil" | "boat";
 
 export interface SupportOption {

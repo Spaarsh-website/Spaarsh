@@ -15,9 +15,12 @@ export function ReadMore({ paragraphs }: { paragraphs: string[] }) {
   const toggled = useRef(false);
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  // The button moves when toggled; keep keyboard focus on it (but never steal focus on page load).
+  // The button moves when toggled; keep keyboard focus on it without scrolling the page
+  // (never on page load). Opening keeps the reader's place; closing brings "Read more" back into view.
   useEffect(() => {
-    if (toggled.current) btnRef.current?.focus();
+    if (!toggled.current) return;
+    btnRef.current?.focus({ preventScroll: true });
+    if (!open) btnRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [open]);
   const [intro, next = "", ...rest] = paragraphs;
 

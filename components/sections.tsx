@@ -130,7 +130,7 @@ export function Origin() {
 /* ---------- 4. What We Do ---------- */
 
 // Designer icons from public/icons. Decorative - the card heading carries the meaning.
-// ponytail: source files are 48px PNGs, slightly soft on retina; swap for SVGs if the designer exports them.
+// Source files are 144px PNGs (3x), shown at 36-48px so they stay sharp on retina screens.
 function IconBox({ name, small = false }: { name: string; small?: boolean }) {
   return (
     <Image
