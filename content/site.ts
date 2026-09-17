@@ -20,10 +20,11 @@ export interface SiteContent {
     heading: string;
     paragraphs: string[];
     quote: string;
+    quoteBy: string;
     image: ImageAsset | null;
   };
-  vision: string;
-  mission: string;
+  vision: { summary: string; paragraphs: string[] };
+  mission: { summary: string; intro: string; points: string[] };
   volunteer: { heading: string; subheading: string; text: string; cta: string };
 }
 
@@ -40,18 +41,42 @@ export const site: SiteContent = {
   origin: {
     heading: "Our story",
     paragraphs: [
-      "SPAARSH grew out of volunteer rescue and relief coordination during the 2026 Assam floods in Sivasagar.",
-      "When the floods came to Sivasagar, a few of us went out. There was no organisation behind it. We were people who knew these villages, and we could not sit at home while families waited for someone to come. We went out in the morning and came back at night, and the next day we went out again.",
-      "For weeks that was the whole of it. Rescue, food, water, whatever we could carry to whoever needed it most.",
-      "Then the water went down, and we understood the harder part. The families we had pulled out had nowhere to return to. No house standing. No work. No way to begin again. We had kept people alive through the worst of it, and then the worst of it ended and they were still left with nothing.",
-      "That is where SPAARSH came from. Not from a plan, but from realising that showing up during a flood is not enough if you leave when the water does. We gave ourselves a name so we could keep going after the emergency passed, and so the next family would not have to hope that strangers turn up.",
-      "We are still those same people. We just do not stop at the water line anymore.",
+      // First two entries render as one paragraph; "Read more" cuts in after "a huge amount of".
+      "It all began with the heavy monsoon rains across Assam. In July 2026, a huge amount of",
+      "water a huge amount of water raging aggressively towards parts of Sivasagar moved into villages, homes and fields within minutes. Thousands sought shelter in relief camps. Many were left behind. Uncertainty and fright hovered around.",
+      "People came forward. Volunteers joined rescue and relief efforts, carrying essential supplies and reaching communities where help was urgently needed. The first response was about survival: getting people out of danger and helping them through the immediate crisis.",
+      "But then, slowly, the waters began to recede. And that was when another story became visible. Behind the flooded homes were families who had lost everything and were left with the unimaginable task of rebuilding their lives from scratch.",
+      "The emergency was beginning to end. But the need was not.",
+      "For our volunteers, this sparked a realisation: people need support not only when disaster strikes, but in the long and difficult journey that follows. And from that realisation, SPAARSH was born. A dream to help became a promise to serve.",
+      "Today it is committed to be the guiding light for people confronted by the harsh realities of life.",
     ],
-    quote: "[PLACEHOLDER: pull-quote from a founder or volunteer]",
+    quote: "We came to help. We stayed to make a difference. Compassion in action, communities at heart.",
+    quoteBy: "Jojati Gogoi, Founder",
     image: null, // PLACEHOLDER: origin photo (4:5)
   },
-  vision: "[PLACEHOLDER: vision statement]",
-  mission: "[PLACEHOLDER: mission statement]",
+  vision: {
+    summary: "A helping hand in need, a lasting partner in recovery.",
+    paragraphs: [
+      "SPAARSH envisions a society where people affected by floods and other challenges receive not only immediate relief, but also long-term rehabilitation, livelihood support and opportunities to rebuild their lives with dignity and self-reliance.",
+      "Beyond disaster response, we aspire to address basic social needs and work alongside communities towards better access to education, healthcare, livelihood opportunities, a safe environment and a dignified quality of life.",
+      "Our vision is simple: to be a helping hand in times of need and a lasting partner in the journey towards recovery, resilience and hope.",
+    ],
+  },
+  mission: {
+    summary: "Compassionate, transparent action for communities.",
+    intro:
+      "SPAARSH is committed to serving vulnerable and underserved communities through compassionate, transparent and community-driven action. Our mission is to:",
+    points: [
+      "Provide timely relief and essential support to communities affected by floods and other disasters.",
+      "Support the long-term rehabilitation and rebuilding of flood-affected families.",
+      "Identify the people most in need and make sure the right support reaches them.",
+      "Help communities regain sustainable livelihoods and become self-reliant.",
+      "Address basic social needs, including food, education, healthcare, sanitation and a safe living environment.",
+      "Mobilize volunteers and citizens to participate in meaningful community service.",
+      "Promote awareness, preparedness and resilience against future disasters.",
+      "Work in partnership with local communities, organizations and stakeholders to create sustainable social impact.",
+    ],
+  },
   volunteer: {
     heading: "Volunteer",
     subheading: "Join our relief efforts",

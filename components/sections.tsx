@@ -13,6 +13,7 @@ import { ImageGrid } from "./ImageGrid";
 import { ContactForm } from "./ContactForm";
 import { Carousel } from "./Carousel";
 import { ReadMore } from "./ReadMore";
+import { DetailsDialog } from "./DetailsDialog";
 import { SocialLinks } from "./SocialIcon";
 import { btnOutline, btnPrimary, card, container, eyebrow, h2 } from "./ui";
 
@@ -115,7 +116,10 @@ export function Origin() {
         <ReadMore paragraphs={origin.paragraphs} />
         <figure className="mt-10 max-w-md">
           <div aria-hidden="true" className="mb-5 h-0.5 w-16 bg-terracotta" />
-          <blockquote className="font-serif text-2xl italic leading-snug">{origin.quote}</blockquote>
+          <blockquote className="font-serif text-lg italic leading-snug md:text-xl">“{origin.quote}”</blockquote>
+          <figcaption className="mt-3 text-xs font-medium uppercase tracking-[0.12em] text-terracotta-text">
+            {origin.quoteBy}
+          </figcaption>
         </figure>
       </div>
       {origin.image && (
@@ -167,15 +171,22 @@ export function WhatWeDo() {
 export function VisionMission() {
   return (
     <section aria-label="Vision and mission" className={`${container} grid gap-8 pb-16 md:grid-cols-[1fr_1px_1fr] md:gap-16 md:pb-28`}>
-      <div>
-        <h2 className={`${eyebrow} mb-5`}>Vision</h2>
-        <p className="font-serif text-xl leading-normal md:text-3xl">{site.vision}</p>
-      </div>
+      <DetailsDialog title="Vision" summary={site.vision.summary}>
+        {site.vision.paragraphs.map((p, i) => (
+          <p key={i} className="mb-5 font-serif text-lg leading-normal md:text-xl">
+            {p}
+          </p>
+        ))}
+      </DetailsDialog>
       <div aria-hidden="true" className="h-px bg-terracotta md:h-auto" />
-      <div>
-        <h2 className={`${eyebrow} mb-5`}>Mission</h2>
-        <p className="font-serif text-xl leading-normal md:text-3xl">{site.mission}</p>
-      </div>
+      <DetailsDialog title="Mission" summary={site.mission.summary}>
+        <p className="mb-5 font-serif text-lg leading-normal md:text-xl">{site.mission.intro}</p>
+        <ul className="list-disc space-y-2 pl-5 text-base font-light leading-relaxed marker:text-terracotta md:text-lg">
+          {site.mission.points.map((p) => (
+            <li key={p}>{p}</li>
+          ))}
+        </ul>
+      </DetailsDialog>
     </section>
   );
 }

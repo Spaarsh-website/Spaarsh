@@ -62,7 +62,7 @@ export const config: SiteConfig = {
   registration: null,
   credits: { label: "@tech_bagwitty", url: "https://www.instagram.com/tech_bagwitty/" },
   volunteerFormUrl:
-    "https://docs.google.com/forms/d/e/1FAIpQLSeb1H7ZQ1UgFiJQlxuWJRtZ2YTZKuRtf3WD3yjg59t7wIhmNg/viewform?usp=header",
+    "https://docs.google.com/forms/d/e/1FAIpQLSeFBFJJD5d5fIXLBNg_Cf1370it2ifUl1sdnbOh7YqIK0Se6g/viewform",
   contactFormEndpoint: "https://formspree.io/f/xppwagao",
 };
 

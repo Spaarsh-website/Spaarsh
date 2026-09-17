@@ -2,13 +2,13 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 
-const PREVIEW_WORDS = 3;
+const PREVIEW_WORDS = 0;
 const pCls = "mb-5 text-base font-light leading-relaxed md:text-lg";
 const btnCls =
   "whitespace-nowrap text-sm font-medium uppercase tracking-[0.12em] text-terracotta-text underline-offset-4 hover:underline";
 
 // The first two paragraphs read as one. Collapsed, the second is cut to its opening words
-// ("When the floods…") followed by Read more. The full text stays in the HTML for search engines.
+// (none today: the first entry already ends mid-sentence at "a huge amount of") followed by Read more. The full text stays in the HTML for search engines.
 export function ReadMore({ paragraphs }: { paragraphs: string[] }) {
   const [open, setOpen] = useState(false);
   const id = useId();
@@ -46,12 +46,12 @@ export function ReadMore({ paragraphs }: { paragraphs: string[] }) {
   return (
     <div id={id}>
       <p className={pCls}>
-        {intro}{" "}
+        {intro}
         {open ? (
-          next
+          ` ${next}`
         ) : (
           <>
-            {preview}… {toggle("Read more")}
+            {preview && ` ${preview}`}… {toggle("Read more")}
             <span hidden>{next.slice(preview.length)}</span>
           </>
         )}
